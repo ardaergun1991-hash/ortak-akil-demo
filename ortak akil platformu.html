@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B/S/H/ Ortak Akıl Platformu — Demo</title>
+
+  <style>
+    :root{
+      --bg:#f5f8fc;
+      --card:#ffffff;
+      --ink:#0b1b33;
+      --muted:#5b6b86;
+      --line:#e4ecf7;
+      --blue:#1463ff;
+      --cyan:#1bb7c7;
+      --green:#20b36c;
+      --orange:#ff8a1f;
+      --red:#ff4d4f;
+      --shadow: 0 10px 28px rgba(13,38,76,.10);
+      --radius:18px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(20,99,255,.14), transparent 55%),
+        radial-gradient(1200px 700px at 90% 0%, rgba(27,183,199,.14), transparent 50%),
+        radial-gradient(900px 650px at 88% 110%, rgba(255,138,31,.12), transparent 55%),
+        radial-gradient(900px 650px at 10% 110%, rgba(32,179,108,.10), transparent 55%),
+        var(--bg);
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1200px; margin:0 auto; padding:22px}
+
+    /* topbar */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:14px 16px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(255,255,255,.76);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      position:sticky; top:14px; z-index:5;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{
+      width:44px; height:44px; border-radius:14px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display:grid; place-items:center; color:#fff; font-weight:900;
+      letter-spacing:.5px;
+      box-shadow: 0 14px 24px rgba(20,99,255,.18);
+    }
+    .brand h1{font-size:16px; margin:0; line-height:1.1}
+    .brand p{margin:2px 0 0; font-size:12px; color:var(--muted)}
+    .actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+    .pill{
+      display:flex; align-items:center; gap:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      box-shadow: 0 10px 18px rgba(13,38,76,.06);
+    }
+    .pill input{
+      border:none; outline:none; font-size:13px; width:220px;
+      color:var(--ink);
+      background:transparent;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:11px;
+      border:1px solid var(--line);
+      padding:3px 6px;
+      border-radius:8px;
+      background:#fff;
+      color:var(--ink);
+    }
+    .btn{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:13px;
+      cursor:pointer;
+      transition:.15s ease;
+      box-shadow: 0 10px 18px rgba(13,38,76,.06);
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn.primary{
+      background: linear-gradient(135deg, var(--blue), #2a7bff);
+      border-color: transparent;
+      color:#fff;
+      box-shadow: 0 14px 26px rgba(20,99,255,.20);
+    }
+    .btn.ghost{background:transparent; box-shadow:none}
+    .btn.small{padding:7px 10px; font-size:12px; font-weight:900}
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap:18px;
+      margin-top:18px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+      .pill input{width:160px}
+    }
+
+    /* hero */
+    .hero{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.66));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-120px -140px auto auto;
+      width:360px; height:360px; border-radius:50%;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,138,31,.20), transparent 55%),
+        radial-gradient(circle at 60% 60%, rgba(32,179,108,.16), transparent 55%),
+        radial-gradient(circle at 50% 50%, rgba(20,99,255,.14), transparent 60%);
+      filter: blur(2px);
+      pointer-events:none;
+    }
+    .hero h2{
+      margin:0 0 8px;
+      font-size:22px;
+      letter-spacing:-.2px;
+      position:relative;
+      z-index:1;
+    }
+    .hero p{margin:0; color:var(--muted); max-width:56ch; line-height:1.55; position:relative; z-index:1}
+    .badges{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; position:relative; z-index:1}
+    .badge{
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.90);
+      color:var(--muted);
+      box-shadow: 0 10px 18px rgba(13,38,76,.05);
+    }
+    .badge strong{color:var(--ink)}
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top:12px;
+      position:relative;
+      z-index:1;
+    }
+    .kpi{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:
+        radial-gradient(180px 90px at 15% 10%, rgba(20,99,255,.08), transparent 60%),
+        radial-gradient(180px 90px at 85% 10%, rgba(27,183,199,.08), transparent 60%),
+        linear-gradient(180deg, #fff, #fbfdff);
+      box-shadow: 0 10px 18px rgba(13,38,76,.05);
+    }
+    .kpi .v{font-size:18px; font-weight:900}
+    .kpi .l{font-size:12px; color:var(--muted); margin-top:4px}
+
+    /* panels */
+    .panel{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panel-h{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px;
+      background:
+        radial-gradient(220px 90px at 10% 0%, rgba(20,99,255,.08), transparent 60%),
+        radial-gradient(240px 110px at 90% 0%, rgba(255,138,31,.08), transparent 60%),
+        linear-gradient(180deg, #fff, #fbfdff);
+    }
+    .panel-h h3{margin:0; font-size:14px}
+    .panel-h small{color:var(--muted)}
+    .panel-b{padding:14px 16px}
+
+    .filters{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      padding:8px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font-size:12px;
+      cursor:pointer;
+      background:#fff;
+      color:var(--muted);
+      user-select:none;
+      transition:.12s ease;
+      box-shadow: 0 10px 18px rgba(13,38,76,.05);
+    }
+    .chip:hover{transform: translateY(-1px)}
+    .chip.active{
+      border-color: rgba(20,99,255,.35);
+      background:
+        radial-gradient(160px 80px at 15% 15%, rgba(20,99,255,.12), transparent 60%),
+        rgba(255,255,255,.92);
+      color: var(--ink);
+      font-weight:900;
+    }
+
+    .list{display:grid; gap:12px; margin-top:14px}
+
+    /* ========= CARD: more visual + colored sections ========= */
+    .card{
+      border:1px solid var(--line);
+      border-radius: 22px;
+      background:
+        radial-gradient(320px 180px at 0% 0%, rgba(20,99,255,.06), transparent 55%),
+        radial-gradient(320px 180px at 110% 0%, rgba(27,183,199,.06), transparent 55%),
+        #fff;
+      box-shadow: 0 10px 26px rgba(13,38,76,.08);
+      overflow:hidden;
+      position:relative;
+    }
+    .card-grid{
+      display:grid;
+      grid-template-columns: 160px 1fr;
+      gap:14px;
+      padding:14px;
+      align-items:stretch;
+    }
+    @media (max-width: 720px){
+      .card-grid{grid-template-columns:1fr}
+    }
+
+    .cover{
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:18px;
+      overflow:hidden;
+      background:
+        radial-gradient(220px 140px at 15% 20%, rgba(20,99,255,.14), transparent 60%),
+        radial-gradient(220px 140px at 85% 0%, rgba(255,138,31,.12), transparent 60%),
+        radial-gradient(240px 160px at 75% 110%, rgba(32,179,108,.10), transparent 60%),
+        linear-gradient(180deg, #fff, #fbfdff);
+      box-shadow: 0 14px 26px rgba(13,38,76,.10);
+      position:relative;
+      min-height:150px;
+    }
+    .cover img{width:100%; height:100%; object-fit:cover; display:block}
+    .cover .cover-badge{
+      position:absolute; left:10px; top:10px;
+      font-size:11px; font-weight:900;
+      padding:6px 8px;
+      border-radius:999px;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.35);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 18px rgba(13,38,76,.12);
+      white-space:nowrap;
+    }
+    .cover-badge.proje{background: linear-gradient(135deg, var(--blue), #2a7bff)}
+    .cover-badge.fikir{background: linear-gradient(135deg, var(--cyan), #29d3e0)}
+    .cover-badge.iyiles{background: linear-gradient(135deg, var(--green), #35d78b)}
+    .cover .cover-trend{
+      position:absolute; right:10px; top:10px;
+      font-size:11px; font-weight:900;
+      padding:6px 8px;
+      border-radius:999px;
+      background: rgba(255,138,31,.22);
+      color:#8a4300;
+      border:1px solid rgba(255,138,31,.30);
+      backdrop-filter: blur(10px);
+      white-space:nowrap;
+    }
+    .cover-tools{
+      position:absolute;
+      left:10px; right:10px; bottom:10px;
+      display:flex; gap:8px; align-items:center; justify-content:space-between;
+    }
+    .cover-tools .btn{box-shadow: 0 10px 18px rgba(13,38,76,.10)}
+    .cover-tools .btn.small{background: rgba(255,255,255,.90)}
+    .cover-tools .btn.small.primary{background: linear-gradient(135deg, var(--blue), #2a7bff); color:#fff; border-color:transparent}
+
+    .card-main{min-width:0}
+
+    .row{display:flex; gap:12px; align-items:flex-start; justify-content:space-between}
+    .title{display:flex; gap:10px; align-items:center; min-width:0}
+    .type{
+      font-size:11px; font-weight:900;
+      padding:6px 8px;
+      border-radius:999px;
+      color:#fff;
+      white-space:nowrap;
+      flex:0 0 auto;
+    }
+    .type.proje{background: linear-gradient(135deg, var(--blue), #2a7bff)}
+    .type.fikir{background: linear-gradient(135deg, var(--cyan), #29d3e0)}
+    .type.iyiles{background: linear-gradient(135deg, var(--green), #35d78b)}
+    .trend{
+      font-size:11px; font-weight:900;
+      padding:6px 8px;
+      border-radius:999px;
+      background: rgba(255,138,31,.14);
+      color:#8a4300;
+      border:1px solid rgba(255,138,31,.25);
+      white-space:nowrap;
+    }
+    .card h4{margin:0; font-size:14px; line-height:1.25; max-width:62ch}
+    .meta{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+      max-width:70ch;
+    }
+
+    /* ✅ Colored background blocks (tags + people) */
+    .tags-wrap{
+      margin-top:10px;
+      padding:10px;
+      border-radius:16px;
+      border:1px solid rgba(228,236,247,.9);
+      background:
+        radial-gradient(240px 120px at 0% 0%, rgba(27,183,199,.10), transparent 60%),
+        radial-gradient(240px 120px at 100% 0%, rgba(20,99,255,.08), transparent 60%),
+        rgba(251,253,255,.92);
+    }
+    .tags{display:flex; gap:8px; flex-wrap:wrap; margin:0}
+    .tag{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--muted);
+      cursor:pointer;
+      box-shadow: 0 10px 18px rgba(13,38,76,.05);
+    }
+    .tag:hover{border-color: rgba(20,99,255,.25)}
+
+    .people-wrap{
+      margin-top:10px;
+      padding:10px;
+      border-radius:16px;
+      border:1px solid rgba(228,236,247,.9);
+      background:
+        radial-gradient(240px 120px at 0% 0%, rgba(255,138,31,.10), transparent 60%),
+        radial-gradient(240px 120px at 100% 0%, rgba(32,179,108,.08), transparent 60%),
+        rgba(251,253,255,.92);
+    }
+    .people{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin:0;
+    }
+
+    .person{
+      display:flex; gap:10px; align-items:center;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 10px;
+      background:#fff;
+      box-shadow: 0 10px 18px rgba(13,38,76,.05);
+    }
+    .avatar{
+      width:32px; height:32px; border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.8);
+      box-shadow: 0 10px 18px rgba(13,38,76,.08);
+      background: linear-gradient(135deg, rgba(20,99,255,.18), rgba(27,183,199,.18));
+      flex:0 0 auto;
+    }
+    .avatar img{width:100%; height:100%; object-fit:cover; display:block}
+    .person b{font-size:12px}
+    .person span{font-size:11px; color:var(--muted)}
+
+    .side{display:grid; gap:18px; align-content:start}
+    .ai{background: linear-gradient(180deg, #ffffff, #fbfdff)}
+    .ai .panel-b{display:grid; gap:12px}
+    .box{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:#fff;
+      box-shadow: 0 10px 18px rgba(13,38,76,.05);
+    }
+    .box h5{margin:0 0 6px; font-size:13px}
+    .box p{margin:0; color:var(--muted); font-size:12px; line-height:1.55}
+    .mini-input{display:flex; gap:10px; align-items:center; margin-top:10px}
+    .mini-input input{
+      flex:1; border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:13px; outline:none;
+    }
+    .result{
+      margin-top:10px;
+      border-left:4px solid rgba(255,77,79,.55);
+      background: rgba(255,77,79,.06);
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:12px;
+      color:#7a1d1f;
+    }
+    .footer{
+      margin:20px 0 6px;
+      color:var(--muted);
+      font-size:12px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .hint{font-size:12px; color:var(--muted)}
+
+    /* People Showcase */
+    .people-showcase{background: linear-gradient(180deg, #ffffff, #fbfdff)}
+    .people-tools{display:flex; gap:10px; align-items:center}
+    .people-search{
+      flex:1;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:13px;
+      outline:none;
+      background:#fff;
+    }
+    .people-kpis{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .people-kpi{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:
+        radial-gradient(200px 90px at 10% 0%, rgba(20,99,255,.08), transparent 60%),
+        radial-gradient(200px 90px at 90% 0%, rgba(27,183,199,.08), transparent 60%),
+        linear-gradient(180deg, #fff, #fbfdff);
+      box-shadow: 0 10px 18px rgba(13,38,76,.05);
+    }
+    .people-kpi .v{font-size:16px; font-weight:900}
+    .people-kpi .l{font-size:12px; color:var(--muted); margin-top:4px}
+    .people-list{display:grid; gap:10px; margin-top:12px}
+    .pmini{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:
+        radial-gradient(220px 120px at 0% 0%, rgba(255,138,31,.08), transparent 60%),
+        radial-gradient(220px 120px at 100% 0%, rgba(32,179,108,.08), transparent 60%),
+        #fff;
+      box-shadow: 0 10px 18px rgba(13,38,76,.06);
+      cursor:pointer;
+      transition:.12s ease;
+    }
+    .pmini:hover{transform: translateY(-1px)}
+    .pmini-top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start}
+    .pmini-id{display:flex; gap:10px; align-items:center}
+    .pmini-avatar{
+      width:34px; height:34px; border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.8);
+      box-shadow: 0 10px 18px rgba(13,38,76,.08);
+      background: linear-gradient(135deg, rgba(20,99,255,.18), rgba(27,183,199,.18));
+      flex:0 0 auto;
+    }
+    .pmini-avatar img{width:100%; height:100%; object-fit:cover; display:block}
+    .pmini-name{font-size:13px; font-weight:900; margin:0}
+    .pmini-sub{font-size:12px; color:var(--muted); margin-top:2px; line-height:1.35}
+    .pmini-badge{
+      font-size:11px;
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fbfdff;
+      color:var(--muted);
+      white-space:nowrap;
+      height:fit-content;
+    }
+    .pmini-tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .pmini-tag{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--muted);
+      cursor:pointer;
+      box-shadow: 0 10px 18px rgba(13,38,76,.05);
+    }
+    .pmini-tag:hover{border-color: rgba(20,99,255,.25)}
+
+    /* Hidden file input */
+    .hidden{display:none !important}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">B/S/H/</div>
+        <div>
+          <h1>Ortak Akıl Platformu <span style="color:var(--muted); font-weight:600">— Demo</span></h1>
+          <p>Bizden Gelen Güç • Projeler • Fikirler • İyileştirmeler • Yetkinlik Haritası</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <div class="pill" title="Arama">
+          <span style="opacity:.7">🔎</span>
+          <input id="search" placeholder="Etiket, proje adı, rol veya fabrika ara…" />
+          <span class="kbd">/</span>
+        </div>
+        <button class="btn ghost" id="resetBtn">Temizle</button>
+        <button class="btn primary" id="newBtn">+ Yeni İçerik (Demo)</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- MAIN -->
+      <div>
+        <div class="hero">
+          <h2>Bu yapı, sadece bir site değil — fikirlerin karşılaştığı, geliştiği ve yayıldığı bir dijital zemin.</h2>
+          <p>
+            Her proje; <b>kim yaptı, hangi rolde katkı sundu, hangi fabrikada üretildi</b> gibi bilgilerle görünür olur.
+            Böylece doğru destek <b>tesadüfle değil, sistemle</b> bulunur.
+          </p>
+          <div class="badges">
+            <div class="badge"><strong>Fabrika Bazlı</strong> topluluklar</div>
+            <div class="badge"><strong>Rol & Yetkinlik</strong> görünürlüğü</div>
+            <div class="badge"><strong>Trend</strong> projeler vitrini</div>
+            <div class="badge"><strong>2. Faz</strong>: AI destekli mükerrer tespit</div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="v" id="kpi1">18</div>
+              <div class="l">Toplam içerik (demo)</div>
+            </div>
+            <div class="kpi">
+              <div class="v" id="kpi2">6</div>
+              <div class="l">Fabrika / alan</div>
+            </div>
+            <div class="kpi">
+              <div class="v" id="kpi3">12</div>
+              <div class="l">Etiket (tag)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:18px">
+          <div class="panel-h">
+            <div>
+              <h3>Keşfet</h3>
+              <small>Fabrika / Tür / Etiket filtreleyerek hızlıca bulun.</small>
+            </div>
+            <div class="hint">İpucu: Aramada “editörlük” ya da “#sunumtasarımı” dene.</div>
+          </div>
+          <div class="panel-b">
+            <div class="filters" id="factoryChips"></div>
+            <div class="filters" style="margin-top:10px" id="typeChips"></div>
+
+            <div class="list" id="cards"></div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div>Demo amaçlıdır. İçerikler temsili örneklerdir.</div>
+          <div>Sunum cümlesi: <b>“Görünürlük başlangıç. Asıl fark, fikirlerin yayılması ve birlikte gelişmesi.”</b></div>
+        </div>
+      </div>
+
+      <!-- SIDE -->
+      <div class="side">
+        <div class="panel people-showcase">
+          <div class="panel-h">
+            <div>
+              <h3>Mini Vitrin — Kişiler</h3>
+              <small>Filtrelenmiş sonuçlara göre önerilen profiller.</small>
+            </div>
+          </div>
+          <div class="panel-b">
+            <div class="people-tools">
+              <input id="peopleSearch" class="people-search" placeholder="İsim / rol ara… (örn: pelin, tasarım)" />
+              <button id="peopleClear" class="btn">Temizle</button>
+            </div>
+
+            <div class="people-kpis">
+              <div class="people-kpi">
+                <div class="v" id="pkpi1">0</div>
+                <div class="l">Görünen kişi</div>
+              </div>
+              <div class="people-kpi">
+                <div class="v" id="pkpi2">0</div>
+                <div class="l">Toplam katkı</div>
+              </div>
+            </div>
+
+            <div class="people-list" id="peopleList"></div>
+
+            <div class="hint" style="margin-top:10px">
+              İpucu: Bir kişiye tıkla → içerik listesi o kişiye göre filtrelenir.
+            </div>
+          </div>
+        </div>
+
+        <div class="panel ai">
+          <div class="panel-h">
+            <div>
+              <h3>2. Faz — Akıllı Asistan (Demo)</h3>
+              <small>Fikir yazmayı kolaylaştırır • Mükerrerleri yakalar • Yönlendirir</small>
+            </div>
+          </div>
+          <div class="panel-b">
+            <div class="box">
+              <h5>Fikir/Proje Asistanı</h5>
+              <p>
+                Kullanıcı fikrini yazarken sistem; hedef, kapsam, fayda, ölçüm kriteri gibi alanları
+                otomatik önerir. Böylece içerik daha net ve karşılaştırılabilir olur.
+              </p>
+              <div class="mini-input">
+                <input id="aiInput" placeholder="Örn: Paket hasarı azaltmak için yeni kontrol yöntemi…" />
+                <button class="btn primary" id="aiBtn">Öner</button>
+              </div>
+              <div id="aiOut" class="result" style="display:none"></div>
+            </div>
+
+            <div class="box">
+              <h5>Mükerrer Tespit (Demo)</h5>
+              <p>
+                Aynı fikir daha önce yüklendiyse sistem uyarır ve ilgili projeleri listeler:
+                “Zaten var — geliştir, birleştir ya da yeni açıyla katkı ver.”
+              </p>
+              <div class="result">
+                <b>Örnek uyarı:</b> “Benzer içerik bulundu: ‘POS onarım takip standardı’ (FDCI)”
+                <br/><span style="color:#7a1d1f">Öneri:</span> “Yeni fikri mevcut projeye ek katkı olarak bağla.”
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-h">
+            <div>
+              <h3>Yetkinlik Haritası</h3>
+              <small>Doğru kişiye ulaşma: tesadüf değil, sistem.</small>
+            </div>
+          </div>
+          <div class="panel-b">
+            <div class="box">
+              <h5>Arama örneği</h5>
+              <p>“Görsel destek” diye aradığında, daha önce sunum tasarımı yapan kişiler önerilir.</p>
+            </div>
+            <div class="box">
+              <h5>Rol örnekleri</h5>
+              <p>#verianalizi • #editörlük • #sunumtasarımı • #süreçiyileştirme • #otomasyon</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- One hidden file input reused for all cards -->
+  <input id="coverFileInput" class="hidden" type="file" accept="image/*" />
+
+  <script>
+    // ---------------- Demo data ----------------
+    const items = [
+      {
+        id: 1,
+        type: "proje",
+        title: "POS Platform Onarım Sistemi — Görünürlük & Standart Akış",
+        factory: "LO",
+        trend: true,
+        desc: "Onarım süreçlerinin standardize edilmesi, geri besleme döngüsü ve ekran vitrini ile sürekli görünürlük.",
+        tags: ["#süreçiyileştirme", "#görselleştirme", "#standart", "#pos"],
+        people: [
+          {name:"Arda Ergün", role:"Editörlük / Koordinasyon"},
+          {name:"Sinan", role:"Veri Analizi"},
+          {name:"Pelin", role:"Sunum Tasarımı"}
+        ]
+      },
+      {
+        id: 2,
+        type: "iyiles",
+        title: "Paket Hasar Analizi — Kök Neden Etiketleme",
+        factory: "LO",
+        trend: false,
+        desc: "Hasar nedenlerini ortak sözlük ile etiketleyip raporlamak; tekrar eden hataları azaltmak.",
+        tags: ["#verianalizi", "#kökNeden", "#lojistik", "#kalite"],
+        people: [
+          {name:"Ozan", role:"Saha Gözlem"},
+          {name:"Emre", role:"Raporlama"},
+          {name:"Veli", role:"Planlama"}
+        ]
+      },
+      {
+        id: 3,
+        type: "fikir",
+        title: "Görsel Sunum Havuzu — Şablon ve İkon Kütüphanesi",
+        factory: "FLCI",
+        trend: true,
+        desc: "Sunum hazırlama hızını artıran kurumsal şablonlar, ikonlar ve örnek anlatım kartları.",
+        tags: ["#sunumtasarımı", "#görselleştirme", "#eğitim"],
+        people: [
+          {name:"Pelin", role:"Tasarım"},
+          {name:"Arda Ergün", role:"İçerik Editörlüğü"}
+        ]
+      },
+      {
+        id: 4,
+        type: "proje",
+        title: "Yıl Sonu Sayımı — Görsel Anlatım ile Standart Eğitim",
+        factory: "LO",
+        trend: false,
+        desc: "Eğitim içeriklerinin görselleştirilmesiyle saha uygulamasında hata oranını azaltma.",
+        tags: ["#eğitim", "#görselleştirme", "#standart", "#sayım"],
+        people: [
+          {name:"Arda Ergün", role:"Süreç Anlatımı"},
+          {name:"Pelin", role:"Görsel Tasarım"}
+        ]
+      },
+      {
+        id: 5,
+        type: "fikir",
+        title: "Mükerrer Proje Uyarısı — AI ile Benzerlik Skoru",
+        factory: "FCLI1",
+        trend: true,
+        desc: "Yüklenen içerikleri analiz edip benzer projeleri gösteren, birleştirme öneren 2. faz fikri.",
+        tags: ["#yapayzeka", "#mükerrer", "#önceliklendirme"],
+        people: [
+          {name:"Cansu", role:"Görüş / Değerlendirme"},
+          {name:"Arda Ergün", role:"Konsept Sahibi"}
+        ]
+      },
+      {
+        id: 6,
+        type: "iyiles",
+        title: "Fabrika Bazlı Topluluk — FCLI2 İçerik Yönetimi",
+        factory: "FCLI2",
+        trend: false,
+        desc: "Her fabrikanın kendi içeriklerini özgürce yönetmesi; diğerlerinden ilham alması.",
+        tags: ["#topluluk", "#paylaşım", "#ilham"],
+        people: [
+          {name:"İpek", role:"Proje Sahibi"},
+          {name:"Arda Ergün", role:"Destek / Bağlantı"}
+        ]
+      },
+    ];
+
+    const factories = ["Tümü","FLCI","FDCI","FCGI","FCLI1","FCLI2","LO"];
+    const types = ["Tümü","proje","fikir","iyiles"];
+
+    const state = {
+      factory: "Tümü",
+      type: "Tümü",
+      q: "",
+      tag: null,
+      peopleQ: ""
+    };
+
+    const elCards = document.getElementById("cards");
+    const elSearch = document.getElementById("search");
+    const elReset = document.getElementById("resetBtn");
+
+    const elPeopleList = document.getElementById("peopleList");
+    const elPeopleSearch = document.getElementById("peopleSearch");
+    const elPeopleClear = document.getElementById("peopleClear");
+
+    const coverFileInput = document.getElementById("coverFileInput");
+    let pendingCoverItemId = null;
+
+    // ---------------- Avatar SVG (symbolic) ----------------
+    function hashString(str){
+      let h = 2166136261;
+      for(let i=0;i<str.length;i++){
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+    function hsl(h,s,l){ return `hsl(${h} ${s}% ${l}%)`; }
+    function pickPalette(seed){
+      const palettes = [
+        {a:[215, 88, 56], b:[192, 88, 54], c:[330, 86, 58]},
+        {a:[260, 88, 60], b:[210, 88, 56], c:[35, 92, 58]},
+        {a:[155, 70, 50], b:[205, 86, 56], c:[285, 82, 62]},
+        {a:[25, 92, 56], b:[330, 86, 60], c:[205, 86, 56]},
+      ];
+      return palettes[seed % palettes.length];
+    }
+    function escapeSvgText(s){
+      return String(s ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#39;");
+    }
+    function svgToDataUri(svg){
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+    function avatarSvg(name){
+      const seed = hashString(String(name || "?"));
+      const pal = pickPalette(seed);
+      const c1 = hsl(pal.a[0], pal.a[1], pal.a[2]);
+      const c2 = hsl(pal.b[0], pal.b[1], pal.b[2]);
+      const c3 = hsl(pal.c[0], pal.c[1], pal.c[2]);
+
+      const initials = String(name || "?")
+        .split(" ")
+        .filter(Boolean)
+        .slice(0,2)
+        .map(x=>x[0])
+        .join("")
+        .toUpperCase() || "?";
+
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="${c1}"/>
+              <stop offset="0.55" stop-color="${c2}"/>
+              <stop offset="1" stop-color="${c3}"/>
+            </linearGradient>
+            <radialGradient id="r" cx="30%" cy="22%" r="72%">
+              <stop offset="0" stop-color="rgba(255,255,255,.60)"/>
+              <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+            </radialGradient>
+          </defs>
+          <rect x="6" y="6" width="84" height="84" rx="26" fill="url(#g)"/>
+          <circle cx="32" cy="28" r="26" fill="url(#r)"/>
+          <text x="48" y="58" text-anchor="middle"
+                font-family="ui-sans-serif, system-ui" font-size="26" font-weight="900"
+                fill="rgba(11,27,51,.92)">${escapeSvgText(initials)}</text>
+        </svg>`;
+      return svgToDataUri(svg);
+    }
+
+    // ---------------- Cover upload (LocalStorage) ----------------
+    function coverStorageKey(itemId){ return `cover_${itemId}`; }
+    function getCover(itemId){ return localStorage.getItem(coverStorageKey(itemId)); }
+    function setCover(itemId, dataUrl){ localStorage.setItem(coverStorageKey(itemId), dataUrl); }
+    function clearCover(itemId){ localStorage.removeItem(coverStorageKey(itemId)); }
+
+    function openCoverPicker(itemId){
+      pendingCoverItemId = itemId;
+      coverFileInput.value = "";
+      coverFileInput.click();
+    }
+
+    coverFileInput.addEventListener("change", () => {
+      const file = coverFileInput.files?.[0];
+      if(!file || !pendingCoverItemId) return;
+
+      if(!file.type.startsWith("image/")){
+        alert("Lütfen bir görsel dosyası seç.");
+        return;
+      }
+
+      // Optional: size guard (avoid huge localStorage)
+      const maxMB = 3.0;
+      if(file.size > maxMB * 1024 * 1024){
+        alert(`Görsel çok büyük (${(file.size/1024/1024).toFixed(1)}MB). Lütfen ${maxMB}MB altında bir görsel seç.`);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setCover(pendingCoverItemId, String(reader.result));
+        pendingCoverItemId = null;
+        renderAll();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // ---------------- Filtering ----------------
+    function renderChips(containerId, arr, key){
+      const el = document.getElementById(containerId);
+      el.innerHTML = "";
+      arr.forEach(v=>{
+        const c = document.createElement("div");
+        c.className = "chip" + ((state[key]===v) ? " active" : "");
+        c.textContent = v.toUpperCase();
+        c.onclick = () => { state[key]=v; state.tag=null; renderAll(); };
+        el.appendChild(c);
+      });
+    }
+
+    function typeLabel(t){
+      if(t==="proje") return "PROJE";
+      if(t==="fikir") return "FİKİR";
+      return "İYİLEŞTİRME";
+    }
+
+    function getFilteredItems(){
+      const q = state.q.trim().toLowerCase();
+      return items.filter(it=>{
+        const okFactory = (state.factory==="Tümü" || it.factory===state.factory);
+        const okType = (state.type==="Tümü" || it.type===state.type);
+        const okTag = (!state.tag || it.tags.includes(state.tag));
+        const hay = (it.title+" "+it.desc+" "+it.factory+" "+it.tags.join(" ")+" "+it.people.map(p=>p.name+" "+p.role).join(" ")).toLowerCase();
+        const okQ = (!q || hay.includes(q));
+        return okFactory && okType && okTag && okQ;
+      });
+    }
+
+    // ---------------- Cards ----------------
+    function renderCards(){
+      const filtered = getFilteredItems();
+      elCards.innerHTML = "";
+
+      filtered.forEach(it=>{
+        const cover = getCover(it.id);
+        const tagsHtml = it.tags.map(t=>`<span class="tag" data-tag="${t}">${t}</span>`).join("");
+
+        const peopleHtml = it.people.map(p=>{
+          const ava = avatarSvg(p.name);
+          return `
+            <div class="person">
+              <div class="avatar"><img alt="avatar" src="${ava}"></div>
+              <div>
+                <b>${p.name}</b><br/>
+                <span>${p.role}</span>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <div class="card-grid">
+            <div class="cover">
+              ${cover
+                ? `<img alt="Kapak" src="${cover}">`
+                : `<div style="width:100%;height:100%;display:grid;place-items:center;color:rgba(11,27,51,.55);font-weight:900;font-size:12px;padding:14px;text-align:center;line-height:1.4">
+                    Kapak görseli yok<br/>“Görsel Ekle” ile ekle
+                  </div>`
+              }
+
+              <span class="cover-badge ${it.type}">${typeLabel(it.type)}</span>
+              ${it.trend ? `<span class="cover-trend">🔥 TREND</span>` : ``}
+
+              <div class="cover-tools">
+                <button class="btn small primary" data-action="addCover" data-id="${it.id}">Görsel Ekle</button>
+                ${cover ? `<button class="btn small" data-action="removeCover" data-id="${it.id}">Kaldır</button>` : `<span></span>`}
+              </div>
+            </div>
+
+            <div class="card-main">
+              <div class="row">
+                <div class="title">
+                  <span class="type ${it.type}">${typeLabel(it.type)}</span>
+                  <div>
+                    <h4>${it.title}</h4>
+                    <div class="meta"><b>${it.factory}</b> • ${it.desc}</div>
+                  </div>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end">
+                  ${it.trend ? `<span class="trend">TREND</span>` : ``}
+                  <span class="badge"><strong>Görünürlük</strong> • Rol & Etiket</span>
+                </div>
+              </div>
+
+              <div class="tags-wrap">
+                <div class="tags">${tagsHtml}</div>
+              </div>
+
+              <div class="people-wrap">
+                <div class="people">${peopleHtml}</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        card.querySelectorAll(".tag").forEach(t=>{
+          t.onclick = () => { state.tag = t.dataset.tag; renderAll(); };
+        });
+
+        card.querySelectorAll("[data-action='addCover']").forEach(btn=>{
+          btn.onclick = () => openCoverPicker(Number(btn.dataset.id));
+        });
+        card.querySelectorAll("[data-action='removeCover']").forEach(btn=>{
+          btn.onclick = () => { clearCover(Number(btn.dataset.id)); renderAll(); };
+        });
+
+        elCards.appendChild(card);
+      });
+
+      document.getElementById("kpi1").textContent = filtered.length;
+    }
+
+    // ---------------- People Showcase ----------------
+    function buildPeopleIndex(filteredItems){
+      const m = new Map();
+      for(const it of filteredItems){
+        for(const p of it.people){
+          const key = (p.name || "").trim();
+          if(!key) continue;
+          if(!m.has(key)){
+            m.set(key, {name:key, roles:new Set(), count:0, factories:new Set(), tags:new Map()});
+          }
+          const rec = m.get(key);
+          rec.count += 1;
+          rec.factories.add(it.factory);
+          rec.roles.add(p.role);
+          for(const t of it.tags){
+            rec.tags.set(t, (rec.tags.get(t)||0)+1);
+          }
+        }
+      }
+      const arr = Array.from(m.values()).map(r=>{
+        const topTags = Array.from(r.tags.entries()).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([t])=>t);
+        return {name:r.name, count:r.count, roles:Array.from(r.roles), factories:Array.from(r.factories), topTags};
+      });
+      arr.sort((a,b)=>b.count-a.count || a.name.localeCompare(b.name,"tr"));
+      return arr;
+    }
+
+    function renderPeopleShowcase(){
+      const filteredItems = getFilteredItems();
+      const people = buildPeopleIndex(filteredItems);
+
+      const q = state.peopleQ.trim().toLowerCase();
+      const shown = !q ? people : people.filter(p=>{
+        const hay = (p.name+" "+p.roles.join(" ")+" "+p.factories.join(" ")+" "+p.topTags.join(" ")).toLowerCase();
+        return hay.includes(q);
+      });
+
+      document.getElementById("pkpi1").textContent = shown.length;
+      document.getElementById("pkpi2").textContent = people.reduce((sum,p)=>sum+p.count,0);
+
+      elPeopleList.innerHTML = "";
+      shown.slice(0, 12).forEach(p=>{
+        const el = document.createElement("div");
+        el.className = "pmini";
+
+        const subtitle = [
+          p.roles[0] ? p.roles[0] : "Rol belirtilmemiş",
+          p.factories.length ? `• ${p.factories.join(", ")}` : ""
+        ].join(" ");
+
+        const tagsHtml = p.topTags.map(t=>`<span class="pmini-tag" data-tag="${t}">${t}</span>`).join("");
+        const ava = avatarSvg(p.name);
+
+        el.innerHTML = `
+          <div class="pmini-top">
+            <div class="pmini-id">
+              <div class="pmini-avatar"><img alt="avatar" src="${ava}"></div>
+              <div>
+                <div class="pmini-name">${p.name}</div>
+                <div class="pmini-sub">${subtitle}</div>
+              </div>
+            </div>
+            <div class="pmini-badge">${p.count} katkı</div>
+          </div>
+          <div class="pmini-tags">${tagsHtml}</div>
+        `;
+
+        el.onclick = () => {
+          state.q = p.name;
+          elSearch.value = p.name;
+          renderAll();
+        };
+
+        el.querySelectorAll(".pmini-tag").forEach(t=>{
+          t.onclick = (ev) => {
+            ev.stopPropagation();
+            state.tag = t.dataset.tag;
+            renderAll();
+          };
+        });
+
+        elPeopleList.appendChild(el);
+      });
+
+      if(shown.length === 0){
+        const empty = document.createElement("div");
+        empty.className = "box";
+        empty.innerHTML = `<h5>Sonuç yok</h5><p>Kişi aramasını temizlemeyi deneyin.</p>`;
+        elPeopleList.appendChild(empty);
+      }
+    }
+
+    function renderAll(){
+      renderChips("factoryChips", factories, "factory");
+      renderChips("typeChips", types, "type");
+      renderCards();
+      renderPeopleShowcase();
+    }
+
+    // "/" focus
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "/"){
+        e.preventDefault();
+        elSearch.focus();
+      }
+      if(e.key === "Escape"){
+        elSearch.blur();
+      }
+    });
+
+    elSearch.addEventListener("input", ()=>{
+      state.q = elSearch.value;
+      renderAll();
+    });
+
+    elReset.addEventListener("click", ()=>{
+      state.factory="Tümü"; state.type="Tümü"; state.q=""; state.tag=null;
+      state.peopleQ="";
+      elSearch.value="";
+      elPeopleSearch.value="";
+      renderAll();
+    });
+
+    document.getElementById("newBtn").addEventListener("click", ()=>{
+      alert("Demo: Gerçek sistemde burada 'Yeni Proje/Fikir/İyileştirme' formu açılacak.\n\nZorunlu alan örnekleri:\n- Fabrika / Alan\n- Tür\n- Görev Alanlar (rol)\n- Etiketler\n- Kısa özet\n- Doküman/Görsel bağlantıları");
+    });
+
+    elPeopleSearch.addEventListener("input", ()=>{
+      state.peopleQ = elPeopleSearch.value;
+      renderPeopleShowcase();
+    });
+
+    elPeopleClear.addEventListener("click", ()=>{
+      state.peopleQ = "";
+      elPeopleSearch.value = "";
+      renderPeopleShowcase();
+    });
+
+    // AI demo
+    const aiBtn = document.getElementById("aiBtn");
+    const aiInput = document.getElementById("aiInput");
+    const aiOut = document.getElementById("aiOut");
+    aiBtn.addEventListener("click", ()=>{
+      const text = aiInput.value.trim();
+      if(!text){
+        aiOut.style.display="block";
+        aiOut.innerHTML = "<b>Öneri:</b> Fikri bir cümleyle yaz. Sistem onu hedef–kapsam–fayda olarak yapılandıracak.";
+        return;
+      }
+      aiOut.style.display="block";
+      aiOut.innerHTML = `
+        <b>Yapılandırılmış öneri (demo):</b><br/>
+        • <b>Hedef:</b> ${text}<br/>
+        • <b>Kapsam:</b> İlgili süreç / fabrika / ekip<br/>
+        • <b>Beklenen fayda:</b> Zaman kaybını azaltma, tekrar işi önleme, standartlaştırma<br/>
+        • <b>Ölçüm:</b> süre, hata oranı, tekrar proje sayısı<br/>
+        <span style="display:block; margin-top:6px; color:#7a1d1f"><b>Not:</b> Benzer içerik taraması yapılacak ve varsa mevcut projeler önerilecek.</span>
+      `;
+    });
+
+    // Initial KPIs
+    document.getElementById("kpi2").textContent = 6;
+    document.getElementById("kpi3").textContent = 12;
+
+    renderAll();
+  </script>
+</body>
+</html>
